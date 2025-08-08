@@ -1,0 +1,22 @@
+name: Build after CI
+
+on:
+  workflow_run: 
+    workflows: [CI]
+    types:
+      - completed
+
+jobs:
+  build-mim:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Run a one-line script
+        if: github.ref_name == 'master'
+        run: echo Hello, world!
+
+      - name: Run a one-line script
+        if: github.ref_name == 'master'
+        run: echo The ref name is: ${{ github.ref_name }}
